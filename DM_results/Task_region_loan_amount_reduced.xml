@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<!-- 4ftMiner.Task.XML.Template, version of 2010-01-16 -->
+<XML>
+
+	<!-- FileDescription -->
+
+	<FileDescription>
+
+		<SoftwareSystem>LISp-Miner</SoftwareSystem>
+		<Subsystem>LM Workspace</Subsystem>
+		<Format>4ftMiner.Task</Format>
+		<Module>LMWorkspace.exe</Module>
+		<Version>27.00.02 of 13 Jul 2016</Version>
+
+	</FileDescription>
+
+	<!-- Data Description -->
+
+	<DataDescription>
+
+		<Matrix>
+			<Name>loans</Name>
+			<RecordCount>1136</RecordCount>
+			<Notice>-</Notice>
+			<Columns>
+				<Column>
+					<ID>29</ID>
+					<Name>PKON_KRAJ</Name>
+					<DataType>Text</DataType>
+					<AttributeType>Ordinary DB field</AttributeType>
+					<Formula></Formula>
+					<Cardinality>Nominal</Cardinality>
+					<Matrix>loans</Matrix>
+					<Notice>-</Notice>
+				</Column>
+				<Column>
+					<ID>105</ID>
+					<Name>UVS_VYSE_PU_USS</Name>
+					<DataType>Decimal number</DataType>
+					<AttributeType>Ordinary DB field</AttributeType>
+					<Formula></Formula>
+					<Cardinality>Cardinal</Cardinality>
+					<Matrix>loans</Matrix>
+					<Min>0</Min>
+					<Max>2600000</Max>
+					<Avg>329264.09672535211</Avg>
+					<Notice>-</Notice>
+				</Column>
+			</Columns>
+		</Matrix>
+
+	</DataDescription>
+
+	<!-- Attributes -->
+
+	<Attributes>
+
+		<Attribute>
+			<ID>3</ID>
+			<Name>Loan_amount</Name>
+			<ShortName>Loan_amount</ShortName>
+			<ShowNameInLiteral>Yes</ShowNameInLiteral>
+			<Column>UVS_VYSE_PU_USS</Column>
+			<ParentGroup>Root group of attributes</ParentGroup>
+			<ActionType>Not Set</ActionType>
+			<ItemShift>0</ItemShift>
+			<Notice>-</Notice>
+			<Categories>
+				<Category>
+					<ID>27</ID>
+					<Name>&lt;0;100000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>96</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>0</ValueFrom>
+							<ValueTo>100000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>28</ID>
+					<Name>&lt;100000;150000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>110</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>100000</ValueFrom>
+							<ValueTo>150000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>29</ID>
+					<Name>&lt;150000;200000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>86</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>150000</ValueFrom>
+							<ValueTo>200000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>30</ID>
+					<Name>&lt;200000;270000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>160</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>200000</ValueFrom>
+							<ValueTo>270000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>31</ID>
+					<Name>&lt;270000;300000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>27</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>270000</ValueFrom>
+							<ValueTo>300000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>32</ID>
+					<Name>&lt;300000;400000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>168</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>300000</ValueFrom>
+							<ValueTo>400000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>33</ID>
+					<Name>&lt;400000;500000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>135</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>400000</ValueFrom>
+							<ValueTo>500000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>34</ID>
+					<Name>&lt;500000;550000)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>291</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>500000</ValueFrom>
+							<ValueTo>550000</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>35</ID>
+					<Name>&lt;550000;562860.94)</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>1</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>550000</ValueFrom>
+							<ValueTo>562860.94</ValueTo>
+							<RightBracketType>no-sharp</RightBracketType>
+							<Closure>closedOpen</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+				<Category>
+					<ID>36</ID>
+					<Name>&lt;562860.94;2600000&gt;</Name>
+					<CategoryType>Interval</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>62</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+					  	<Interval>
+							<LeftBracketType>sharp</LeftBracketType>
+							<ValueFrom>562860.94</ValueFrom>
+							<ValueTo>2600000</ValueTo>
+							<RightBracketType>sharp</RightBracketType>
+							<Closure>closedClosed</Closure>
+					  	</Interval>
+					</Values>
+				</Category>
+			</Categories>
+		</Attribute>
+		<Attribute>
+			<ID>1</ID>
+			<Name>Region</Name>
+			<ShortName>Region</ShortName>
+			<ShowNameInLiteral>Yes</ShowNameInLiteral>
+			<Column>PKON_KRAJ</Column>
+			<ParentGroup>Root group of attributes</ParentGroup>
+			<ActionType>Not Set</ActionType>
+			<ItemShift>0</ItemShift>
+			<Notice>-</Notice>
+			<Categories>
+				<Category>
+					<ID>1</ID>
+					<Name>Hlavn&#237; m&#283;sto Praha</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>80</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Hlavn&#237; m&#283;sto Praha</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>2</ID>
+					<Name>Jiho&#269;esk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>74</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Jiho&#269;esk&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>3</ID>
+					<Name>Jihomoravsk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>117</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Jihomoravsk&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>4</ID>
+					<Name>Karlovarsk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>41</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Karlovarsk&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>5</ID>
+					<Name>Kr&#225;lov&#233;hradeck&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>66</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Kr&#225;lov&#233;hradeck&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>6</ID>
+					<Name>Libereck&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>33</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Libereck&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>7</ID>
+					<Name>Moravskoslezsk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>185</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Moravskoslezsk&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>8</ID>
+					<Name>N/A</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>3</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>N/A</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>9</ID>
+					<Name>Olomouck&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>85</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Olomouck&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>10</ID>
+					<Name>Pardubick&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>59</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Pardubick&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>11</ID>
+					<Name>Plze&#328;sk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>39</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Plze&#328;sk&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>12</ID>
+					<Name>St&#345;edo&#269;esk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>134</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>St&#345;edo&#269;esk&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>13</ID>
+					<Name>&#218;steck&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>76</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>&#218;steck&#253; kraj</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>14</ID>
+					<Name>Vyso&#269;ina</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>32</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Vyso&#269;ina</Enum>
+					</Values>
+				</Category>
+				<Category>
+					<ID>15</ID>
+					<Name>Zl&#237;nsk&#253; kraj</Name>
+					<CategoryType>Enumeration</CategoryType>
+					<BoolType>No boolean</BoolType>
+					<IncludingNULL>No</IncludingNULL>
+					<Frequency>112</Frequency>
+					<IsXCategory>No</IsXCategory>
+					<Notice>-</Notice>
+					<Values>
+						<Enum>Zl&#237;nsk&#253; kraj</Enum>
+					</Values>
+				</Category>
+			</Categories>
+		</Attribute>
+	</Attributes>
+
+	<!-- Task Description-->
+
+	<TaskDescription>
+
+		<Task>
+			<ID>Region x Loan amount (reduced)</ID>
+			<Name>Region x Loan amount (reduced)</Name>
+			<TaskGroup>Default group of tasks</TaskGroup>
+			<DataMatrix>loans</DataMatrix>
+			<MinimumSupport>0.017606</MinimumSupport>
+			<MinimumConfidence>-1</MinimumConfidence>
+			<TotalCategories>25</TotalCategories>
+			<NumberOfRules>3</NumberOfRules>
+			<NumberOfVerifications>390</NumberOfVerifications>
+			<TaskTime>16.8.2016 16:23:56</TaskTime>
+			<TaskDuration>0h 0m 0s</TaskDuration>
+			<FTMissingsType>Ignore X-categories</FTMissingsType>
+			<FTTaskParamProlong100AFlag>Yes</FTTaskParamProlong100AFlag>
+			<FTTaskParamProlong100SFlag>Yes</FTTaskParamProlong100SFlag>
+			<FTTaskParamPrimeCheckMinLen>Yes</FTTaskParamPrimeCheckMinLen>
+			<FTTaskParamPrimeCheck>Yes</FTTaskParamPrimeCheck>
+			<FTTaskParamIncludeSymetricFlag>Yes</FTTaskParamIncludeSymetricFlag>
+			<TaskNotice>-</TaskNotice>
+			<Author>PowerUser</Author>
+
+			<FTCedentBagDescriptions>
+				<FTCedentBagDescription>
+					<ID>8</ID>
+					<CedentType>Antecedent</CedentType>
+					<MinimalLength>0</MinimalLength>
+					<MaximalLength>5</MaximalLength>
+					<FTCedentDescriptions>
+						<FTCedentDescription>
+							<ID>7</ID>
+							<PartialCedent>Default Partial Cedent</PartialCedent>
+							<BoolOpType>Conjunction</BoolOpType>
+							<MinLen>0</MinLen>
+							<MaxLen>5</MaxLen>
+							<FTLiteralDescriptions>
+								<FTLiteralDescription> 
+									<ID>5</ID>
+									<Name>Region (subset), 1 - 1</Name>
+									<Attribute>Region</Attribute>
+									<Column>PKON_KRAJ</Column>
+									<LiteralType>Basic</LiteralType>
+									<CoefficientType>Subsets</CoefficientType>
+									<EquivalenceClass>NULL</EquivalenceClass>
+									<MinimalLength>1</MinimalLength>
+									<MaximalLength>1</MaximalLength>
+									<LiteralPosition>1</LiteralPosition>
+								</FTLiteralDescription>
+							</FTLiteralDescriptions>
+						</FTCedentDescription>
+					</FTCedentDescriptions>
+				</FTCedentBagDescription>
+				<FTCedentBagDescription>
+					<ID>9</ID>
+					<CedentType>Succedent</CedentType>
+					<MinimalLength>1</MinimalLength>
+					<MaximalLength>5</MaximalLength>
+					<FTCedentDescriptions>
+						<FTCedentDescription>
+							<ID>8</ID>
+							<PartialCedent>Default Partial Cedent</PartialCedent>
+							<BoolOpType>Conjunction</BoolOpType>
+							<MinLen>1</MinLen>
+							<MaxLen>5</MaxLen>
+							<FTLiteralDescriptions>
+								<FTLiteralDescription> 
+									<ID>6</ID>
+									<Name>Loan_amount (seq), 1 - 3</Name>
+									<Attribute>Loan_amount</Attribute>
+									<Column>UVS_VYSE_PU_USS</Column>
+									<LiteralType>Basic</LiteralType>
+									<CoefficientType>Sequences</CoefficientType>
+									<EquivalenceClass>NULL</EquivalenceClass>
+									<MinimalLength>1</MinimalLength>
+									<MaximalLength>3</MaximalLength>
+									<LiteralPosition>1</LiteralPosition>
+								</FTLiteralDescription>
+							</FTLiteralDescriptions>
+						</FTCedentDescription>
+					</FTCedentDescriptions>
+				</FTCedentBagDescription>
+				<FTCedentBagDescription>
+					<ID>7</ID>
+					<CedentType>Condition</CedentType>
+					<MinimalLength>0</MinimalLength>
+					<MaximalLength>5</MaximalLength>
+					<FTCedentDescriptions>
+						<FTCedentDescription>
+							<ID>9</ID>
+							<PartialCedent>Default Partial Cedent</PartialCedent>
+							<BoolOpType>Conjunction</BoolOpType>
+							<MinLen>0</MinLen>
+							<MaxLen>5</MaxLen>
+							<FTLiteralDescriptions>
+							</FTLiteralDescriptions>
+						</FTCedentDescription>
+					</FTCedentDescriptions>
+				</FTCedentBagDescription>
+			</FTCedentBagDescriptions>
+
+		<!-- Quantifiers -->
+
+			<QuantifierDescriptions>
+				<QuantifierDescription>
+					<Quantifier>BASE</Quantifier>
+					<Threshold>20.000000</Threshold>
+					<SignificanceLevel>N/A</SignificanceLevel>
+				</QuantifierDescription>
+				<QuantifierDescription>
+					<Quantifier>Above Average Dependence</Quantifier>
+					<Threshold>0.650000</Threshold>
+					<SignificanceLevel>N/A</SignificanceLevel>
+				</QuantifierDescription>
+			</QuantifierDescriptions>
+
+		<!-- MiningSchema -->
+
+			<MiningSchema>
+				<MiningField>PKON_KRAJ</MiningField>
+				<MiningField>UVS_VYSE_PU_USS</MiningField>
+			</MiningSchema>
+
+		<!-- Association rules -->
+
+			<AssociationRules>
+				<AssociationRule>
+					<ID>32</ID>
+					<Name>Region(Hlavn&#237; m&#283;sto Praha) &gt;:&lt; Loan_amount(&lt;500000;550000))</Name>
+					<FTAntecedent>Region(Hlavn&#237; m&#283;sto Praha)</FTAntecedent>
+					<FTSuccedent>Loan_amount(&lt;500000;550000))</FTSuccedent>
+					<Confidence>0.425000</Confidence>
+					<Support>0.029930</Support>
+
+					<FTAntecedentInterpretatations>
+						<FTAntecedentInterpretatation>
+							<ID>63</ID>
+							<Name>Region(Hlavn&#237; m&#283;sto Praha)</Name>
+							<BoolOpType>Conjunction</BoolOpType>
+							<FTLiterals>
+								<FTLiteral>
+									<ID>63</ID>
+									<Name>Region(Hlavn&#237; m&#283;sto Praha)</Name>
+									<Attribute>Region</Attribute>
+									<Coefficients>
+										<Coefficient>Hlavn&#237; m&#283;sto Praha</Coefficient>
+									</Coefficients>
+								</FTLiteral>
+							</FTLiterals>
+						</FTAntecedentInterpretatation>
+					</FTAntecedentInterpretatations>
+
+					<FTSuccedentInterpretatations>
+						<FTSuccedentInterpretatation>
+							<ID>64</ID>
+							<Name>Loan_amount(&lt;500000;550000))</Name>
+							<BoolOpType>Conjunction</BoolOpType>
+							<FTLiterals>
+								<FTLiteral>
+									<ID>64</ID>
+									<Name>Loan_amount(&lt;500000;550000))</Name>
+									<Attribute>Loan_amount</Attribute>
+									<Coefficients>
+										<Coefficient>&lt;500000;550000)</Coefficient>
+									</Coefficients>
+								</FTLiteral>
+							</FTLiterals>
+						</FTSuccedentInterpretatation>
+					</FTSuccedentInterpretatations>
+
+					<FTConditionInterpretatations>
+					</FTConditionInterpretatations>
+
+				<!-- Quantifier Values -->
+		
+					<FTQuantifierValues>
+						<FTQuantifierValue>
+							<Name>a</Name>
+							<Value>34</Value>
+							<Notice>a-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>b</Name>
+							<Value>46</Value>
+							<Notice>b-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>c</Name>
+							<Value>257</Value>
+							<Notice>c-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>d</Name>
+							<Value>799</Value>
+							<Notice>d-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>r</Name>
+							<Value>80</Value>
+							<Notice>r-frequency (a+b) from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>n</Name>
+							<Value>1136</Value>
+							<Notice>n-frequency (a+b+c+d) from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Conf</Name>
+							<Value>0.425</Value>
+							<Notice>Confidence (validity): a/(a+b)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DConf</Name>
+							<Value>0.1008902077</Value>
+							<Notice>D-Confidence: a/(a+b+c)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>EConf</Name>
+							<Value>0.7332746479</Value>
+							<Notice>E-Confidence: (a+d)/(a+b+c+d)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Supp</Name>
+							<Value>0.0299295775</Value>
+							<Notice>Support: a/(a+b+c+d)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Cmplt</Name>
+							<Value>0.116838488</Value>
+							<Notice>Completeness: a/(a+c)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>AvgDf</Name>
+							<Value>0.6591065292</Value>
+							<Notice>Average difference: a(a+b+c+d)/((a+b)(a+c))- 1 in &lt;-1;inf)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Lift</Name>
+							<Value>1.6591065292</Value>
+							<Notice>Lift measure: a*((a+b)(a+c))/(a+b+c+d) = AvgDf+ 1</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>LBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>UBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>ELBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound equivalence (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>EUBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound equivalence (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DLBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound double implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DUBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound double implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Fisher</Name>
+							<Value>0.0004712225</Value>
+							<Notice>Fisher test</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Chi-Sq</Name>
+							<Value>12.8751384522</Value>
+							<Notice>Chi-square test</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bMean</Name>
+							<Value>0.4268292683</Value>
+							<Notice>Bayesian Mean</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bVAR</Name>
+							<Value>0.4268292683</Value>
+							<Notice>Bayesian Variance</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bStDev</Name>
+							<Value>0.0542912765</Value>
+							<Notice>Bayesian std. deviation</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>P(&gt;=90%)</Name>
+							<Value>0</Value>
+							<Notice>Bayesian Beta PDF integral (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>P(&gt;=95%)</Name>
+							<Value>0</Value>
+							<Notice>Bayesian Beta PDF integral (p=0.95)</Notice>
+						</FTQuantifierValue>
+					</FTQuantifierValues>
+		
+					<FTContingencyTable>
+						<FreqA>34</FreqA>
+						<FreqB>46</FreqB>
+						<FreqC>257</FreqC>
+						<FreqD>799</FreqD>
+					</FTContingencyTable>
+
+				</AssociationRule>
+				<AssociationRule>
+					<ID>33</ID>
+					<Name>Region(Hlavn&#237; m&#283;sto Praha) &gt;:&lt; Loan_amount(&lt;500000;550000), &lt;550000;562860.94))</Name>
+					<FTAntecedent>Region(Hlavn&#237; m&#283;sto Praha)</FTAntecedent>
+					<FTSuccedent>Loan_amount(&lt;500000;550000), &lt;550000;562860.94))</FTSuccedent>
+					<Confidence>0.425000</Confidence>
+					<Support>0.029930</Support>
+
+					<FTAntecedentInterpretatations>
+						<FTAntecedentInterpretatation>
+							<ID>65</ID>
+							<Name>Region(Hlavn&#237; m&#283;sto Praha)</Name>
+							<BoolOpType>Conjunction</BoolOpType>
+							<FTLiterals>
+								<FTLiteral>
+									<ID>65</ID>
+									<Name>Region(Hlavn&#237; m&#283;sto Praha)</Name>
+									<Attribute>Region</Attribute>
+									<Coefficients>
+										<Coefficient>Hlavn&#237; m&#283;sto Praha</Coefficient>
+									</Coefficients>
+								</FTLiteral>
+							</FTLiterals>
+						</FTAntecedentInterpretatation>
+					</FTAntecedentInterpretatations>
+
+					<FTSuccedentInterpretatations>
+						<FTSuccedentInterpretatation>
+							<ID>66</ID>
+							<Name>Loan_amount(&lt;500000;550000), &lt;550000;562860.94))</Name>
+							<BoolOpType>Conjunction</BoolOpType>
+							<FTLiterals>
+								<FTLiteral>
+									<ID>66</ID>
+									<Name>Loan_amount(&lt;500000;550000), &lt;550000;562860.94))</Name>
+									<Attribute>Loan_amount</Attribute>
+									<Coefficients>
+										<Coefficient>&lt;500000;550000)</Coefficient>
+										<Coefficient>&lt;550000;562860.94)</Coefficient>
+									</Coefficients>
+								</FTLiteral>
+							</FTLiterals>
+						</FTSuccedentInterpretatation>
+					</FTSuccedentInterpretatations>
+
+					<FTConditionInterpretatations>
+					</FTConditionInterpretatations>
+
+				<!-- Quantifier Values -->
+		
+					<FTQuantifierValues>
+						<FTQuantifierValue>
+							<Name>a</Name>
+							<Value>34</Value>
+							<Notice>a-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>b</Name>
+							<Value>46</Value>
+							<Notice>b-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>c</Name>
+							<Value>258</Value>
+							<Notice>c-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>d</Name>
+							<Value>798</Value>
+							<Notice>d-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>r</Name>
+							<Value>80</Value>
+							<Notice>r-frequency (a+b) from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>n</Name>
+							<Value>1136</Value>
+							<Notice>n-frequency (a+b+c+d) from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Conf</Name>
+							<Value>0.425</Value>
+							<Notice>Confidence (validity): a/(a+b)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DConf</Name>
+							<Value>0.100591716</Value>
+							<Notice>D-Confidence: a/(a+b+c)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>EConf</Name>
+							<Value>0.7323943662</Value>
+							<Notice>E-Confidence: (a+d)/(a+b+c+d)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Supp</Name>
+							<Value>0.0299295775</Value>
+							<Notice>Support: a/(a+b+c+d)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Cmplt</Name>
+							<Value>0.1164383562</Value>
+							<Notice>Completeness: a/(a+c)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>AvgDf</Name>
+							<Value>0.6534246575</Value>
+							<Notice>Average difference: a(a+b+c+d)/((a+b)(a+c))- 1 in &lt;-1;inf)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Lift</Name>
+							<Value>1.6534246575</Value>
+							<Notice>Lift measure: a*((a+b)(a+c))/(a+b+c+d) = AvgDf+ 1</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>LBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>UBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>ELBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound equivalence (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>EUBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound equivalence (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DLBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound double implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DUBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound double implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Fisher</Name>
+							<Value>0.0005059927</Value>
+							<Notice>Fisher test</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Chi-Sq</Name>
+							<Value>12.7126427555</Value>
+							<Notice>Chi-square test</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bMean</Name>
+							<Value>0.4268292683</Value>
+							<Notice>Bayesian Mean</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bVAR</Name>
+							<Value>0.4268292683</Value>
+							<Notice>Bayesian Variance</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bStDev</Name>
+							<Value>0.0542912765</Value>
+							<Notice>Bayesian std. deviation</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>P(&gt;=90%)</Name>
+							<Value>0</Value>
+							<Notice>Bayesian Beta PDF integral (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>P(&gt;=95%)</Name>
+							<Value>0</Value>
+							<Notice>Bayesian Beta PDF integral (p=0.95)</Notice>
+						</FTQuantifierValue>
+					</FTQuantifierValues>
+		
+					<FTContingencyTable>
+						<FreqA>34</FreqA>
+						<FreqB>46</FreqB>
+						<FreqC>258</FreqC>
+						<FreqD>798</FreqD>
+					</FTContingencyTable>
+
+				</AssociationRule>
+				<AssociationRule>
+					<ID>34</ID>
+					<Name>Region(Zl&#237;nsk&#253; kraj) &gt;:&lt; Loan_amount(&lt;100000;150000))</Name>
+					<FTAntecedent>Region(Zl&#237;nsk&#253; kraj)</FTAntecedent>
+					<FTSuccedent>Loan_amount(&lt;100000;150000))</FTSuccedent>
+					<Confidence>0.178571</Confidence>
+					<Support>0.017606</Support>
+
+					<FTAntecedentInterpretatations>
+						<FTAntecedentInterpretatation>
+							<ID>67</ID>
+							<Name>Region(Zl&#237;nsk&#253; kraj)</Name>
+							<BoolOpType>Conjunction</BoolOpType>
+							<FTLiterals>
+								<FTLiteral>
+									<ID>67</ID>
+									<Name>Region(Zl&#237;nsk&#253; kraj)</Name>
+									<Attribute>Region</Attribute>
+									<Coefficients>
+										<Coefficient>Zl&#237;nsk&#253; kraj</Coefficient>
+									</Coefficients>
+								</FTLiteral>
+							</FTLiterals>
+						</FTAntecedentInterpretatation>
+					</FTAntecedentInterpretatations>
+
+					<FTSuccedentInterpretatations>
+						<FTSuccedentInterpretatation>
+							<ID>68</ID>
+							<Name>Loan_amount(&lt;100000;150000))</Name>
+							<BoolOpType>Conjunction</BoolOpType>
+							<FTLiterals>
+								<FTLiteral>
+									<ID>68</ID>
+									<Name>Loan_amount(&lt;100000;150000))</Name>
+									<Attribute>Loan_amount</Attribute>
+									<Coefficients>
+										<Coefficient>&lt;100000;150000)</Coefficient>
+									</Coefficients>
+								</FTLiteral>
+							</FTLiterals>
+						</FTSuccedentInterpretatation>
+					</FTSuccedentInterpretatations>
+
+					<FTConditionInterpretatations>
+					</FTConditionInterpretatations>
+
+				<!-- Quantifier Values -->
+		
+					<FTQuantifierValues>
+						<FTQuantifierValue>
+							<Name>a</Name>
+							<Value>20</Value>
+							<Notice>a-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>b</Name>
+							<Value>92</Value>
+							<Notice>b-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>c</Name>
+							<Value>90</Value>
+							<Notice>c-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>d</Name>
+							<Value>934</Value>
+							<Notice>d-frequency from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>r</Name>
+							<Value>112</Value>
+							<Notice>r-frequency (a+b) from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>n</Name>
+							<Value>1136</Value>
+							<Notice>n-frequency (a+b+c+d) from the contingency table</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Conf</Name>
+							<Value>0.1785714286</Value>
+							<Notice>Confidence (validity): a/(a+b)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DConf</Name>
+							<Value>0.099009901</Value>
+							<Notice>D-Confidence: a/(a+b+c)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>EConf</Name>
+							<Value>0.8397887324</Value>
+							<Notice>E-Confidence: (a+d)/(a+b+c+d)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Supp</Name>
+							<Value>0.0176056338</Value>
+							<Notice>Support: a/(a+b+c+d)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Cmplt</Name>
+							<Value>0.1818181818</Value>
+							<Notice>Completeness: a/(a+c)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>AvgDf</Name>
+							<Value>0.8441558442</Value>
+							<Notice>Average difference: a(a+b+c+d)/((a+b)(a+c))- 1 in &lt;-1;inf)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Lift</Name>
+							<Value>1.8441558442</Value>
+							<Notice>Lift measure: a*((a+b)(a+c))/(a+b+c+d) = AvgDf+ 1</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>LBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>UBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>ELBound</Name>
+							<Value>0.9999999999</Value>
+							<Notice>Lower bound equivalence (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>EUBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound equivalence (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DLBound</Name>
+							<Value>1</Value>
+							<Notice>Lower bound double implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>DUBound</Name>
+							<Value>0</Value>
+							<Notice>Upper bound double implication (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Fisher</Name>
+							<Value>0.0033338723</Value>
+							<Notice>Fisher test</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>Chi-Sq</Name>
+							<Value>9.4926394268</Value>
+							<Notice>Chi-square test</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bMean</Name>
+							<Value>0.1842105263</Value>
+							<Notice>Bayesian Mean</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bVAR</Name>
+							<Value>0.1842105263</Value>
+							<Notice>Bayesian Variance</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>bStDev</Name>
+							<Value>0.0361490884</Value>
+							<Notice>Bayesian std. deviation</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>P(&gt;=90%)</Name>
+							<Value>0</Value>
+							<Notice>Bayesian Beta PDF integral (p=0.9)</Notice>
+						</FTQuantifierValue>
+						<FTQuantifierValue>
+							<Name>P(&gt;=95%)</Name>
+							<Value>0</Value>
+							<Notice>Bayesian Beta PDF integral (p=0.95)</Notice>
+						</FTQuantifierValue>
+					</FTQuantifierValues>
+		
+					<FTContingencyTable>
+						<FreqA>20</FreqA>
+						<FreqB>92</FreqB>
+						<FreqC>90</FreqC>
+						<FreqD>934</FreqD>
+					</FTContingencyTable>
+
+				</AssociationRule>
+			</AssociationRules>
+
+		</Task>
+
+	</TaskDescription>
+
+</XML>
