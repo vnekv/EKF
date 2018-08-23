@@ -20,7 +20,6 @@ def create_connection(db_file):
         return conn
     except Error as e:
         print(e)
-
     return None
 
 
@@ -41,13 +40,12 @@ def get_relevant_atk_formulas(conn, attribute_name):
     from_atks = cur.fetchall()
     # if name of the attribute from association rule is the same as the name of the attribute in ATK
     for atk_one in from_atks:
-        atks_relevant.append([atk_one[0], atk_one[2], attribute_name])
-
+        atks_relevant.append([atk_one[0], atk_one[2], attribute_name, atk_one[1]])
     from_ass = curs.fetchall()
     # if name of the attribute from association rule is contained in the name of the attribute in ATK
     for atk in from_ass:
         if (atk[2]) in attribute_name[0].lower():
-            atks_relevant.append([atk[0], atk[2], attribute_name])
+            atks_relevant.append([atk[0], atk[2], attribute_name, atk[1]])
     return atks_relevant
 
 
@@ -61,7 +59,7 @@ def get_possible_assignment_rules(conn, categories=10):
     return possible_rules
 
 
-def get_association_rules(file='../DM_results/Region x Loan amount.Task.LMWorkspace.pmml'):
+def get_association_rules(file):
     pmml_file = os.path.join(os.getcwd(), file)
     tree = etree.parse(pmml_file)
     all_assoc = tree.findall('.//AssociationRule')
@@ -204,16 +202,16 @@ def get_level(conn, id_assig_rule, ranks):
     return level_fin
 
 
-def get_conn_rank(conn, conn_name):
+def get_conn_rank(conn, cv_name, ca_name):
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("select measure_rank "
-                "from atk_formula a join data d on a.id_measure=d.id_measure "
+    cur.execute("select measure_rank, d.id_measure  "
+                "from  data d "
                 "join conn_element_value cv on d.id_conn_element_value=cv.id "
                 "join conn_element c on cv.id_conn_element=c.id "
-                "where cv.name = ? and c.name = ? ", (conn_name, CONN_ELEMENT))
-    row = cur.fetchone()
-    return [row["measure_rank"], ]
+                "where cv.name = ? and c.name = ? ", (cv_name, ca_name))
+    rows = cur.fetchall()
+    return rows
 
 
 def apply_atk_formula(conn, atk_id=1, level_atr='very low', level_measure='low / very low'):
@@ -249,11 +247,14 @@ def apply_atk_formula(conn, atk_id=1, level_atr='very low', level_measure='low /
 
 def get_distinct_atks(used_atks):
     used_atks_distinct = []
-    used_atks_distinct.append(used_atks[0])  # take the first atk to enable comparison
-    for i in range(1, len(used_atks) - 1):
-        for uad in used_atks_distinct:
-            if uad['id'] != used_atks[i]['id']:
-                used_atks_distinct.append(used_atks[i])
+    try:
+        used_atks_distinct.append(used_atks[0])  # take the first atk to enable comparison
+        for i in range(1, len(used_atks) - 1):
+            for uad in used_atks_distinct:
+                if uad['id'] != used_atks[i]['id']:
+                    used_atks_distinct.append(used_atks[i])
+    except IndexError:
+        used_atks_distinct = []
     return used_atks_distinct
 
 
@@ -278,27 +279,32 @@ def construct_explanation(explanation, conn_level, onto_cnt=''):
     return expl
 
 
-def get_explanations(conn, conn_name, conn_level, assig_rule=2):
+def get_explanations(conn, cv_name, ranks, ca_name, assig_rule=2):
     explanations = []
     for tb_lev in get_top_bottom_level_names(conn, assig_rule):
-        if tb_lev[0] == conn_level:
-            cu = conn.cursor()
-            cu.execute("select cv.name, m.name, measure_value "
-                       "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
-                       "join measure m on d.id_measure=m.id "
-                       "join conn_element c on cv.id_conn_element=c.id "
-                       "where cv.name = ? and c.name = ? ", (conn_name, CONN_ELEMENT))
-            db_explanations = cu.fetchall()
-            for db_explanation in db_explanations:
-                t = construct_explanation(db_explanation, conn_level)
-            explanations.append(t)
+        for row in ranks:
+            conn_level=get_level(conn, assig_rule, [row[0], ])
+            if tb_lev[0] == conn_level:
+                cu = conn.cursor()
+                cu.execute("select cv.name, m.name, measure_value "
+                           "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
+                           "join measure m on d.id_measure=m.id "
+                           "join conn_element c on cv.id_conn_element=c.id "
+                           "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
+                db_explanations = cu.fetchall()
+                for db_explanation in db_explanations:
+                    t = construct_explanation(db_explanation, conn_level)
+                explanations.append(t)
     return explanations[:3]
 
 
 def get_storage_codes(session, word, collection='all2'):
-    url = "http://owl.vse.cz:8080/OOSPservices/api/v1/search3?word=" + word + "&collection=" + collection + \
+    url = "https://owl.vse.cz/OOSPservices/api/v1/search3?word=" + word + "&collection=" + collection + \
           "&comparator=token&entities=7&scope=15"
-    r = session.get(url)#, proxies=proxies)
+    if proxies:
+        r = session.get(url, proxies=proxies)
+    else:
+        r = session.get(url)
     if r.status_code == 201:
         try:
             s = r.content
@@ -321,50 +327,56 @@ def get_onto_expl_list(db_explanations, conn_level, att_names):
                     a = get_storage_codes(session, 'loan')
                     g = set(m).intersection(a)
                     counts += len(g)
-                if att[0] != CONN_ELEMENT and att[0] != 'Loan_amount':
+                if att[0] != CONN_ELEMENT and att[0] != 'Loan_amount': #conn element changed?
                     a = get_storage_codes(session, att[0])  # hits for attribute
                     g = set(m).intersection(a)
                     counts += len(g)
+                # the common ratio for the ontology relevancy criterion to be computed.
             expl = construct_explanation(db_explanation, conn_level, counts)
         onto_expl_list.append(expl)
     return onto_expl_list
 
 
-def get_ontology_explanations(conn, conn_name, conn_level, att_names, assig_rule=2):
+def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_rule=2):
     sorted_list = []
+    temp_list = []
+    e_list = []
     if EXPL_RELEVANCY == 2:  # only ontology relevancy
         cu = conn.cursor()
-        cu.execute("select cv.name, m.name, measure_value "
-                   "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
-                   "join measure m on d.id_measure=m.id "
-                   "join conn_element c on cv.id_conn_element=c.id "
-                   "where cv.name = ? and c.name = ? ", (conn_name, CONN_ELEMENT))
-        db_explanations = cu.fetchall()  # all measures for selected connection element and connection value
-        onto_expl_list = get_onto_expl_list(db_explanations, conn_level, att_names)
-        sorted_list = sorted(onto_expl_list, key=itemgetter(4), reverse=True)  # sort according to ontology relevancy
-    if EXPL_RELEVANCY == 3:  # top 3 and bottom three levels and then sort by ontology relevancy
-        cur = conn.cursor()
-        cur.execute("select l.name, l.sort, cnt "
-                    "from assignment_rule a join level_group lg on a.id_level_group=lg.id "
-                    "join level l on l.id_level_group=lg.id "
-                    "where a.id=? and (l.sort=cnt or l.sort=1) ", (assig_rule,))
-        tb_levs = cur.fetchall()  # get top and bottom level names
-        for tb_lev in tb_levs:
-            if tb_lev[0] == conn_level:
-                cu = conn.cursor()
-                cu.execute("select cv.name, m.name, measure_value "
-                           "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
-                           "join measure m on d.id_measure=m.id "
-                           "join conn_element c on cv.id_conn_element=c.id "
-                           "where cv.name = ? and c.name = ? ", (conn_name, CONN_ELEMENT))
-                db_explanations = cu.fetchall()  # all measures for selected connection element and connection value
-                if len(db_explanations) == 1:  # no need to call API if only one explanation
-                    expl = construct_explanation(db_explanations[0], conn_level)
-                    sorted_list.append(expl)
-                if len(db_explanations) > 1:
+        for row in ranks:
+            conn_level=get_level(conn, assig_rule, [row[0], ])
+            cu.execute("select cv.name, m.name, measure_value "
+                       "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
+                       "join measure m on d.id_measure=m.id "
+                       "join conn_element c on cv.id_conn_element=c.id "
+                       "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
+            db_explanations = cu.fetchall()  # all measures for selected connection element and connection value
+            onto_expl_list = get_onto_expl_list(db_explanations, conn_level, att_names)
+            temp_list.append(onto_expl_list)
+        for ex in temp_list:
+            for e in ex:
+                a = tuple(e)
+                e_list.append(a)
+        sorted_list = sorted(e_list, key=itemgetter(4), reverse=True)  # sort according to ontology relevancy
+    if EXPL_RELEVANCY == 3:  # top 3 and bottom three ranks and then sort by ontology relevancy
+        for tb_lev in get_top_bottom_level_names(conn, assig_rule):
+            for row in ranks:
+                conn_level = get_level(conn, assig_rule, [row[0], ])
+                if tb_lev[0] == conn_level:
+                    cu = conn.cursor()
+                    cu.execute("select cv.name, m.name, measure_value "
+                               "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
+                               "join measure m on d.id_measure=m.id "
+                               "join conn_element c on cv.id_conn_element=c.id "
+                               "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
+                    db_explanations = cu.fetchall()
                     onto_expl_list = get_onto_expl_list(db_explanations, conn_level, att_names)
-                    sorted_list = sorted(onto_expl_list, key=itemgetter(4),
-                                         reverse=True)  # sort according to ontology relevancy
+                    temp_list.append(onto_expl_list)
+        for ex in temp_list:
+            for e in ex:
+                a = tuple(e)
+                e_list.append(a)
+        sorted_list = sorted(e_list, key=itemgetter(4), reverse=True)  # sort according to ontology relevancy
     return sorted_list[:3]
 
 
@@ -414,7 +426,11 @@ def filter_rules(filter, assoc_rule, atk_id=''):
 def print_explanations(rule):
     print('--------------------------------')
     print('EXPLANATIONS FOUND FOR THIS RULE:')
-    if len(rule['explanations']) > 0:
+    # if len(rule['explanations']) == 0:
+    #     print('No explanation found for this rule')
+    # else:
+    try:
+        len(rule['explanations']) == 0
         i = 1
         for e in rule['explanations']:
             print('--- Explanation', i, '---')
@@ -429,7 +445,7 @@ def print_explanations(rule):
             except IndexError:
                 pass
             i += 1
-    else:
+    except KeyError:
         print('No explanation found for this rule')
     pass
 
@@ -440,6 +456,17 @@ def print_plain_rule(rule):
     for im in rule['ims']:
         print('Interest measure: ' + im[0] + ', type: ' + im[1] + ', value: ' + im[2])
     pass
+
+
+def change_conn_att_hierarchy(conn, conn_lower='Praha'):
+    cu = conn.cursor()
+    cu.execute("select cv_high.name, ce.name "
+               "from conn_element_value cv_low "
+               "join conn_element_value cv_high on cv_low.id_parent_value = cv_high.id "
+               "join conn_element ce on cv_high.id_conn_element=ce.id "
+               "where cv_low.name=? ", (conn_lower,))
+    conn_higher = cu.fetchone()
+    return conn_higher
 
 
 def main():
@@ -455,18 +482,28 @@ def main():
                     for lit in assoc_rule['literals']:
                         if lit[0] == CONN_ELEMENT:
                             conn_value = lit[1][0]
-                            conn_rank = get_conn_rank(conn, conn_value)
-                            conn_level = get_level(conn, 2, conn_rank)  # assig rule hardcoded
+                            if RAISE_HIERARCHY == 1:
+                                conn_value, conn_element_changed = change_conn_att_hierarchy(conn,conn_value)
+                                conn_ranks = get_conn_rank(conn, conn_value, conn_element_changed)
+                            if RAISE_HIERARCHY == 0:
+                                conn_ranks = get_conn_rank(conn, conn_value, CONN_ELEMENT)
                             if SHOW_EXPLANATIONS:
-                                if EXPL_RELEVANCY == 1:
-                                    explanations = get_explanations(conn, conn_value, conn_level)
-                                    assoc_rule.update({'explanations': explanations})
-                                if EXPL_RELEVANCY in (2, 3):
-                                    for att in assoc_rule['attributes']:
-                                        if att[0] != CONN_ELEMENT:
-                                            explanations = get_ontology_explanations(conn, conn_value, conn_level, assoc_rule['attributes'])
-                                            assoc_rule.update({'explanations': explanations})
-
+                                if RAISE_HIERARCHY == 0:
+                                    if EXPL_RELEVANCY == 1:
+                                        explanations = get_explanations(conn, conn_value, conn_ranks, CONN_ELEMENT)
+                                        assoc_rule.update({'explanations': explanations})
+                                    if EXPL_RELEVANCY in (2, 3):
+                                        explanations = get_ontology_explanations(conn, conn_value, conn_ranks, assoc_rule['attributes'], CONN_ELEMENT)
+                                        assoc_rule.update({'explanations': explanations})
+                                if RAISE_HIERARCHY == 1:
+                                    if EXPL_RELEVANCY == 1:
+                                        explanations = get_explanations(conn, conn_value, conn_ranks, conn_element_changed)
+                                        assoc_rule.update({'explanations': explanations})
+                                    if EXPL_RELEVANCY in (2, 3):
+                                        explanations = get_ontology_explanations(conn, conn_value, conn_ranks,
+                                                                                 assoc_rule['attributes'],
+                                                                                 conn_element_changed)
+                                        assoc_rule.update({'explanations': explanations})
                 if SHOW_ATK:
                     if get_relevant_atk_formulas(conn, att):
                         for atk in get_relevant_atk_formulas(conn, att):
@@ -475,7 +512,8 @@ def main():
                             for category in assoc_rule['categories_rank']:
                                 if category[0] == att[0]:
                                     att_ranks.append(category[2])
-                            atr_level = get_level(conn, possible_assig_rules[0], att_ranks) # rank u atributu chybi
+                            atr_level = get_level(conn, possible_assig_rules[0], att_ranks)
+                            conn_level = get_level(conn, 2, [conn_ranks[0][0], ])
                             atk_res = apply_atk_formula(conn, atk[0], atr_level, conn_level)
                             atks_res.append(atk_res)
                             used_atks.append(atk_res)
