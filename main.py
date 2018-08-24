@@ -82,6 +82,7 @@ def get_association_rules(file):
         DBAslev1.append(consequent)
         attributes = []
         literals = []
+        categories_rank = []
         for DBAlev1 in DBAslev1:
             for dba in tree.findall('.//DBA'):
                 if dba.attrib['id'] == DBAlev1:
@@ -119,7 +120,6 @@ def get_association_rules(file):
                                                                                 bins.append([bin.attrib['binValue'], bin_int[0].attrib['leftMargin'], bin_int[0].attrib['rightMargin']])
                                                                             sorted_bins = sorted(bins, key=lambda bin0: bins[1]) # sort according to left margin
                                                                             sorted_bins_names = []
-                                                                            categories_rank = []
                                                                             for x in sorted_bins:
                                                                                 sorted_bins_names.append(x[0])
                                                                             for category in categories_obj:
@@ -457,7 +457,13 @@ def print_explanations(rule):
         for e in rule['explanations']:
             print('--- Explanation', i, '---')
             print('Connecting attribute name:', CONN_ELEMENT)
-            print('Connecting attribute value:', e[0])
+            for literal in rule["literals"]:
+                if literal[0] == CONN_ELEMENT:
+                    conn_value = literal[1][0]
+                    print('Connecting attribute value:', conn_value)
+            if RAISE_HIERARCHY == 1:
+                print('Used parent connecting attribute: Region')
+                print('Used parent connecting attribute value: ', e[0])
             print('Measure:', e[2])
             print('Level of the measure:', e[1])
             print('Value of the measure:', e[3])
