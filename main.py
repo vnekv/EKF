@@ -203,14 +203,28 @@ def get_level(conn, id_assig_rule, ranks):
 
 
 def get_conn_rank(conn, cv_name, ca_name):
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("select measure_rank, d.id_measure  "
-                "from  data d "
-                "join conn_element_value cv on d.id_conn_element_value=cv.id "
-                "join conn_element c on cv.id_conn_element=c.id "
-                "where cv.name = ? and c.name = ? ", (cv_name, ca_name))
-    rows = cur.fetchall()
+    if LEVELS == 'rank':
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("select measure_rank, d.id_measure  "
+                    "from  data d "
+                    "join conn_element_value cv on d.id_conn_element_value=cv.id "
+                    "join conn_element c on cv.id_conn_element=c.id "
+                    "where cv.name = ? and c.name = ? ", (cv_name, ca_name))
+        rows = cur.fetchall()
+    if LEVELS == 'width':
+        sql = "select d.id_measure, measure_value, cv.name " \
+              "from data d join conn_element_value cv on d.id_conn_element_value=cv.id " \
+              "join conn_element c on cv.id_conn_element=c.id " \
+              "join measure m on d.id_measure = m.id " \
+              "where c.name = ? "
+        df = pd.read_sql(sql, conn, params={ca_name})
+        series = df.groupby('id_measure')['measure_value'].transform(
+            lambda x: pd.cut(x, bins=5, labels=["5", "4", "3", "2", "1"]))
+        df3 = df.merge(series.to_frame(), left_index=True, right_index=True)
+        df4 = df3[df3.name == cv_name]
+        df4 = df4.loc[:, ['measure_value_y', 'id_measure']]
+        rows = df4.values.tolist()
     return rows
 
 
@@ -280,6 +294,10 @@ def construct_explanation(explanation, conn_level, onto_cnt=''):
 
 
 def get_explanations(conn, cv_name, ranks, ca_name, assig_rule=2):
+    if LEVELS == 'rank':
+        assig_rule = 2
+    if LEVELS == 'width':
+        assig_rule = 3
     explanations = []
     for tb_lev in get_top_bottom_level_names(conn, assig_rule):
         for row in ranks:
@@ -341,6 +359,10 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
     sorted_list = []
     temp_list = []
     e_list = []
+    if LEVELS == 'rank':
+        assig_rule = 2
+    if LEVELS == 'width':
+        assig_rule = 3
     if EXPL_RELEVANCY == 2:  # only ontology relevancy
         cu = conn.cursor()
         for row in ranks:
