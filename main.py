@@ -338,19 +338,30 @@ def get_onto_expl_list(db_explanations, conn_level, att_names):
     with requests.Session() as session:
         onto_expl_list = []
         for db_explanation in db_explanations:
-            counts = 0  # sum of common hits of measure and attributes
+            obrc_all = []  # all single OBRC (for each attribute)
             m = get_storage_codes(session, db_explanation[1])  # hits for measure
             for att in att_names:
                 if att[0] == 'Loan_amount':
                     a = get_storage_codes(session, 'loan')
                     g = set(m).intersection(a)
-                    counts += len(g)
+                    try:
+                        obrc_single = len(g) / len(a)
+                    except ZeroDivisionError:
+                        obrc_single = 0
+                    obrc_all.append(obrc_single)
                 if att[0] != CONN_ELEMENT and att[0] != 'Loan_amount': #conn element changed?
                     a = get_storage_codes(session, att[0])  # hits for attribute
                     g = set(m).intersection(a)
-                    counts += len(g)
-                # the common ratio for the ontology relevancy criterion to be computed.
-            expl = construct_explanation(db_explanation, conn_level, counts)
+                    try:
+                        obrc_single = len(g) / len(a)
+                    except ZeroDivisionError:
+                        obrc_single = 0
+                    obrc_all.append(obrc_single)
+            try:
+                obrc_final = sum(obrc_all) / len(obrc_all)
+            except ZeroDivisionError:
+                obrc_final = 0
+            expl = construct_explanation(db_explanation, conn_level, obrc_final)
         onto_expl_list.append(expl)
     return onto_expl_list
 
@@ -379,8 +390,7 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
             for e in ex:
                 a = tuple(e)
                 e_list.append(a)
-        sorted_list = sorted(e_list, key=itemgetter(4), reverse=True)  # sort according to ontology relevancy
-    if EXPL_RELEVANCY == 3:  # top 3 and bottom three ranks and then sort by ontology relevancy
+    if EXPL_RELEVANCY == 3:  # top and bottom levels and then sort by ontology relevancy
         for tb_lev in get_top_bottom_level_names(conn, assig_rule):
             for row in ranks:
                 conn_level = get_level(conn, assig_rule, [row[0], ])
@@ -398,7 +408,11 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
             for e in ex:
                 a = tuple(e)
                 e_list.append(a)
-        sorted_list = sorted(e_list, key=itemgetter(4), reverse=True)  # sort according to ontology relevancy
+    if OBRC_THRESHOLD > 0:
+        for it in e_list:
+            if it[4] >= OBRC_THRESHOLD:
+                sorted_list.append(it)
+    sorted_list = sorted(sorted_list, key=itemgetter(4), reverse=True)
     return sorted_list[:3]
 
 
@@ -469,7 +483,7 @@ def print_explanations(rule):
             print('Value of the measure:', e[3])
             try:
                 t = e[4]
-                print('Ontology relevancy:', t)
+                print('Ontology relevancy: '+'{:.2%}'.format(t))
             except IndexError:
                 pass
             i += 1
