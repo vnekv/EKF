@@ -188,6 +188,15 @@ def get_level(conn, id_assig_rule, ranks):
             elif rank in (10, 11):
                 level_name = 'low'
             levels.append(level_name)
+    if id_assig_rule == 4:
+        for rank in ranks:
+            if rank  == 1:
+                level_name = 'very high'
+            elif rank  == 2:
+                level_name = 'medium'
+            elif rank == 3:
+                level_name = 'very low'
+            levels.append(level_name)
     if len(levels) == 1:
         level_fin = levels[0]
     else:
@@ -234,11 +243,12 @@ def apply_atk_formula(conn, atk_id=1, level_atr='very low', level_measure='low /
                 "from atk_formula f join measure m on f.id_measure=m.id "
                 "where f.id = ?", (atk_id,))
     one = cur.fetchone()
+    cons = 0
+    contr = 0
+    levels_measure = level_measure.split('/')  # strip
+    levels_attribute = level_atr.split('/')  # strip
     if one[3] == 'direct_prop':
-        cons = 0
-        contr = 0
-        levels_measure = level_measure.split('/')  # strip
-        levels_attribute = level_atr.split('/')  # strip
+
         for level_measure in levels_measure:
             for level_attribute in levels_attribute:
                 if level_measure == level_attribute:
@@ -256,7 +266,25 @@ def apply_atk_formula(conn, atk_id=1, level_atr='very low', level_measure='low /
             "consequence": cons,
             "contradiction": contr
         }
-        return applied_atk
+    if one[3] == 'indirect_prop':
+        for level_measure in levels_measure:
+            for level_attribute in levels_attribute:
+                if level_measure == level_attribute:
+                    contr = 1
+                if (level_measure == 'very low' and level_attribute == 'very high') \
+                        or (level_measure == 'low' and level_attribute == 'high') \
+                        or (level_measure == 'very high' and level_attribute == 'very low') \
+                        or (level_measure == 'high' and level_attribute == 'low'):
+                    cons = 1
+        applied_atk = {
+            "id": one[0],
+            "attribute": one[2],
+            "relationship": one[3],
+            "measure": one[1],
+            "consequence": cons,
+            "contradiction": contr
+            }
+    return applied_atk
 
 
 def get_distinct_atks(used_atks):

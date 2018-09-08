@@ -2,9 +2,9 @@ CONN_ELEMENT = 'District' #District #Region
 SHOW_EXPLANATIONS = 1
 EXPL_RELEVANCY = 3
 # 1: only top or bottom level
-# 2: only ontology relevancy
-# 3: top 3 top and bottom levels and then sort by ontology relevancy
-OBRC_THRESHOLD = 0.1
+# 2: only ontology relevancy (top 3 explanations)
+# 3: top and bottom levels and then sort by ontology relevancy (top 3 explanations)
+OBRC_THRESHOLD = 0.1  # threshold for Ontology based relevancy criterion
 SHOW_ATK = 0
 FILTER = 'cons'
 RAISE_HIERARCHY = 1 #0 raise level of hierarchy of connecting attribute
