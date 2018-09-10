@@ -447,26 +447,17 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
 def filter_rules(filter, assoc_rule, atk_id=''):
     hit = 0
     atk_out = []
-    if len(assoc_rule['atks']) == 0 and filter == 'no_cons':  # special treatment for no relevant atks for rules -> show all rules
-        atk_out.append('no_cons')
-        hit += 1
-    if atk_id == '':
-        for a in assoc_rule['atks']:
-            if filter == 'cons':
-                if a['consequence'] == 1:
-                    atk_out.append(a)
-                    hit += 1
-            if filter == 'contr':
-                if a['contradiction'] == 1:
-                    atk_out.append(a)
-                    hit += 1
+    if 'atks' in assoc_rule:
+        try:
+            if len(assoc_rule['atks']) == 0 and filter == 'no_cons':  # special treatment for no relevant atks for rules -> show all rules
+                atk_out.append('no_cons')
+                hit += 1
+        except KeyError:
             if filter == 'no_cons':
-                if a['consequence'] == 0:
-                    atk_out.append(a)
-                    hit += 1
-    else:
-        for a in assoc_rule['atks']:
-            if atk_id == a['id']:
+                atk_out.append('no_cons')
+                hit += 1
+        if atk_id == '':
+            for a in assoc_rule['atks']:
                 if filter == 'cons':
                     if a['consequence'] == 1:
                         atk_out.append(a)
@@ -479,6 +470,21 @@ def filter_rules(filter, assoc_rule, atk_id=''):
                     if a['consequence'] == 0:
                         atk_out.append(a)
                         hit += 1
+        else:
+            for a in assoc_rule['atks']:
+                if atk_id == a['id']:
+                    if filter == 'cons':
+                        if a['consequence'] == 1:
+                            atk_out.append(a)
+                            hit += 1
+                    if filter == 'contr':
+                        if a['contradiction'] == 1:
+                            atk_out.append(a)
+                            hit += 1
+                    if filter == 'no_cons':
+                        if a['consequence'] == 0:
+                            atk_out.append(a)
+                            hit += 1
     if hit == 0:
         pass
     if hit > 0:
@@ -546,8 +552,17 @@ def main():
         assoc_rules = get_association_rules(PMML_FILE)     # path to the PMML file
         used_atks = []
         for assoc_rule in assoc_rules:
+            print(assoc_rule['text'])
             atks_res = []
+            print('assoc_rule[attributes]', assoc_rule['attributes'])
+            print('assoc rule 0',assoc_rule['attributes'][0])
+            #print('join',' '.join(assoc_rule['attributes']))
+            if CONN_ELEMENT not in assoc_rule['text']:
+                print('No connecting attribute detected for association rule:', assoc_rule['text'])
+                continue
             for att in assoc_rule['attributes']:
+                print('CONN_ELEMENT', CONN_ELEMENT)
+                print('att[0]',att[0])
                 if att[0] == CONN_ELEMENT:
                     for lit in assoc_rule['literals']:
                         if lit[0] == CONN_ELEMENT:
@@ -574,7 +589,9 @@ def main():
                                                                                  assoc_rule['attributes'],
                                                                                  conn_element_changed)
                                         assoc_rule.update({'explanations': explanations})
-                if SHOW_ATK:
+
+            if SHOW_ATK:
+                for att in assoc_rule['attributes']:
                     if get_relevant_atk_formulas(conn, att):
                         for atk in get_relevant_atk_formulas(conn, att):
                             possible_assig_rules = get_possible_assignment_rules(conn, att[1])
