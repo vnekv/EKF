@@ -46,12 +46,23 @@ def get_relevant_atk_formulas(conn, attribute_name):
     for atk in from_ass:
         if (atk[2]) in attribute_name[0].lower():
             atks_relevant.append([atk[0], atk[2], attribute_name, atk[1]])
-    return atks_relevant
+    # remove possible duplicates
+    output = []
+    seen = set()
+    for a in atks_relevant:
+        if a[0] not in seen:
+            output.append(a)
+            seen.add(a[0])
+    return output
 
 
 def get_possible_assignment_rules(conn, categories=10):
     cur = conn.cursor()
-    cur.execute("select id from assignment_rule where categories = ?", (categories,))
+    if LEVELS == 5:
+        lev_group = 1
+    elif LEVELS == 3:
+        lev_group = 2
+    cur.execute("select id from assignment_rule where categories = ? and id_level_group = ?", (categories, lev_group))
     possible_rules = []
     rules = cur.fetchall()
     for rule in rules:
@@ -190,12 +201,21 @@ def get_level(conn, id_assig_rule, ranks):
             levels.append(level_name)
     if id_assig_rule == 4:
         for rank in ranks:
-            if rank  == 1:
-                level_name = 'very high'
-            elif rank  == 2:
+            if rank == 1:
+                level_name = 'low'
+            elif rank == 2:
                 level_name = 'medium'
             elif rank == 3:
-                level_name = 'very low'
+                level_name = 'high'
+            levels.append(level_name)
+    if id_assig_rule == 5:
+        for rank in ranks:
+            if 1 <= rank <= 5:
+                level_name = 'high'
+            elif 6 <= rank <= 9:
+                level_name = 'medium'
+            elif 10 <= rank <= 14:
+                level_name = 'low'
             levels.append(level_name)
     if len(levels) == 1:
         level_fin = levels[0]
@@ -212,7 +232,7 @@ def get_level(conn, id_assig_rule, ranks):
 
 
 def get_conn_rank(conn, cv_name, ca_name):
-    if LEVELS == 'rank':
+    if CONN_LEVELS == 'rank':
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         cur.execute("select measure_rank, d.id_measure  "
@@ -221,15 +241,18 @@ def get_conn_rank(conn, cv_name, ca_name):
                     "join conn_element c on cv.id_conn_element=c.id "
                     "where cv.name = ? and c.name = ? ", (cv_name, ca_name))
         rows = cur.fetchall()
-    if LEVELS == 'width':
+    if CONN_LEVELS == 'width':
         sql = "select d.id_measure, measure_value, cv.name " \
               "from data d join conn_element_value cv on d.id_conn_element_value=cv.id " \
               "join conn_element c on cv.id_conn_element=c.id " \
               "join measure m on d.id_measure = m.id " \
               "where c.name = ? "
         df = pd.read_sql(sql, conn, params={ca_name})
-        series = df.groupby('id_measure')['measure_value'].transform(
-            lambda x: pd.cut(x, bins=5, labels=["5", "4", "3", "2", "1"]))
+        seri = df.sort_values(by=['id_measure','measure_value'], ascending=False)
+        series = seri.groupby('id_measure')[
+            'measure_value'].transform(
+            lambda x: pd.cut(x, bins=14,
+                             labels=["14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"]))
         df3 = df.merge(series.to_frame(), left_index=True, right_index=True)
         df4 = df3[df3.name == cv_name]
         df4 = df4.loc[:, ['measure_value_y', 'id_measure']]
@@ -248,7 +271,6 @@ def apply_atk_formula(conn, atk_id=1, level_atr='very low', level_measure='low /
     levels_measure = level_measure.split('/')  # strip
     levels_attribute = level_atr.split('/')  # strip
     if one[3] == 'direct_prop':
-
         for level_measure in levels_measure:
             for level_attribute in levels_attribute:
                 if level_measure == level_attribute:
@@ -322,9 +344,9 @@ def construct_explanation(explanation, conn_level, onto_cnt=''):
 
 
 def get_explanations(conn, cv_name, ranks, ca_name, assig_rule=2):
-    if LEVELS == 'rank':
+    if CONN_LEVELS == 'rank':
         assig_rule = 2
-    if LEVELS == 'width':
+    if CONN_LEVELS == 'width':
         assig_rule = 3
     explanations = []
     for tb_lev in get_top_bottom_level_names(conn, assig_rule):
@@ -398,9 +420,9 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
     sorted_list = []
     temp_list = []
     e_list = []
-    if LEVELS == 'rank':
+    if CONN_LEVELS == 'rank':
         assig_rule = 2
-    if LEVELS == 'width':
+    if CONN_LEVELS == 'width':
         assig_rule = 3
     if EXPL_RELEVANCY == 2:  # only ontology relevancy
         cu = conn.cursor()
@@ -552,17 +574,11 @@ def main():
         assoc_rules = get_association_rules(PMML_FILE)     # path to the PMML file
         used_atks = []
         for assoc_rule in assoc_rules:
-            print(assoc_rule['text'])
             atks_res = []
-            print('assoc_rule[attributes]', assoc_rule['attributes'])
-            print('assoc rule 0',assoc_rule['attributes'][0])
-            #print('join',' '.join(assoc_rule['attributes']))
             if CONN_ELEMENT not in assoc_rule['text']:
                 print('No connecting attribute detected for association rule:', assoc_rule['text'])
                 continue
             for att in assoc_rule['attributes']:
-                print('CONN_ELEMENT', CONN_ELEMENT)
-                print('att[0]',att[0])
                 if att[0] == CONN_ELEMENT:
                     for lit in assoc_rule['literals']:
                         if lit[0] == CONN_ELEMENT:
@@ -600,7 +616,10 @@ def main():
                                 if category[0] == att[0]:
                                     att_ranks.append(category[2])
                             atr_level = get_level(conn, possible_assig_rules[0], att_ranks)
-                            conn_level = get_level(conn, 2, [conn_ranks[0][0], ])
+                            if LEVELS == 5:
+                                conn_level = get_level(conn, 2, [conn_ranks[0][0], ])
+                            if LEVELS == 3:
+                                conn_level = get_level(conn, 5, [conn_ranks[0][0], ])
                             atk_res = apply_atk_formula(conn, atk[0], atr_level, conn_level)
                             atks_res.append(atk_res)
                             used_atks.append(atk_res)
