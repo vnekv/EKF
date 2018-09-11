@@ -521,8 +521,7 @@ def print_explanations(rule):
     # if len(rule['explanations']) == 0:
     #     print('No explanation found for this rule')
     # else:
-    try:
-        len(rule['explanations']) == 0
+    if 'explanations' in rule:
         i = 1
         for e in rule['explanations']:
             print('--- Explanation', i, '---')
@@ -543,7 +542,7 @@ def print_explanations(rule):
             except IndexError:
                 pass
             i += 1
-    except KeyError:
+    else:
         print('No explanation found for this rule')
     pass
 
@@ -592,19 +591,23 @@ def main():
                                 if RAISE_HIERARCHY == 0:
                                     if EXPL_RELEVANCY == 1:
                                         explanations = get_explanations(conn, conn_value, conn_ranks, CONN_ELEMENT)
-                                        assoc_rule.update({'explanations': explanations})
+                                        if len(explanations) != 0:
+                                            assoc_rule.update({'explanations': explanations})
                                     if EXPL_RELEVANCY in (2, 3):
                                         explanations = get_ontology_explanations(conn, conn_value, conn_ranks, assoc_rule['attributes'], CONN_ELEMENT)
-                                        assoc_rule.update({'explanations': explanations})
+                                        if len(explanations) != 0:
+                                            assoc_rule.update({'explanations': explanations})
                                 if RAISE_HIERARCHY == 1:
                                     if EXPL_RELEVANCY == 1:
                                         explanations = get_explanations(conn, conn_value, conn_ranks, conn_element_changed)
-                                        assoc_rule.update({'explanations': explanations})
+                                        if len(explanations) != 0:
+                                            assoc_rule.update({'explanations': explanations})
                                     if EXPL_RELEVANCY in (2, 3):
                                         explanations = get_ontology_explanations(conn, conn_value, conn_ranks,
                                                                                  assoc_rule['attributes'],
                                                                                  conn_element_changed)
-                                        assoc_rule.update({'explanations': explanations})
+                                        if len(explanations) != 0:
+                                            assoc_rule.update({'explanations': explanations})
 
             if SHOW_ATK:
                 for att in assoc_rule['attributes']:
