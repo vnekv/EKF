@@ -343,26 +343,28 @@ def construct_explanation(explanation, conn_level, onto_cnt=''):
     return expl
 
 
-def get_explanations(conn, cv_name, ranks, ca_name, assig_rule=2):
-    if CONN_LEVELS == 'rank':
+def get_explanations(conn, cv_name, ranks, ca_name):
+    if LEVELS == 5:
         assig_rule = 2
-    if CONN_LEVELS == 'width':
-        assig_rule = 3
+    if LEVELS == 3:
+        assig_rule = 5
     explanations = []
     for tb_lev in get_top_bottom_level_names(conn, assig_rule):
         for row in ranks:
             conn_level=get_level(conn, assig_rule, [row[0], ])
-            if tb_lev[0] == conn_level:
-                cu = conn.cursor()
-                cu.execute("select cv.name, m.name, measure_value "
-                           "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
-                           "join measure m on d.id_measure=m.id "
-                           "join conn_element c on cv.id_conn_element=c.id "
-                           "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
-                db_explanations = cu.fetchall()
-                for db_explanation in db_explanations:
-                    t = construct_explanation(db_explanation, conn_level)
-                explanations.append(t)
+            levels_measure = conn_level.split('/')
+            for level_measure in levels_measure:
+                if tb_lev[0] == level_measure.strip():
+                    cu = conn.cursor()
+                    cu.execute("select cv.name, m.name, measure_value "
+                               "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
+                               "join measure m on d.id_measure=m.id "
+                               "join conn_element c on cv.id_conn_element=c.id "
+                               "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
+                    db_explanations = cu.fetchall()
+                    for db_explanation in db_explanations:
+                        t = construct_explanation(db_explanation, conn_level)
+                    explanations.append(t)
     return explanations[:3]
 
 
@@ -420,10 +422,10 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
     sorted_list = []
     temp_list = []
     e_list = []
-    if CONN_LEVELS == 'rank':
+    if LEVELS == 5:
         assig_rule = 2
-    if CONN_LEVELS == 'width':
-        assig_rule = 3
+    if LEVELS == 3:
+        assig_rule = 5
     if EXPL_RELEVANCY == 2:  # only ontology relevancy
         cu = conn.cursor()
         for row in ranks:
@@ -444,23 +446,28 @@ def get_ontology_explanations(conn, cv_name, ranks, att_names, ca_name, assig_ru
         for tb_lev in get_top_bottom_level_names(conn, assig_rule):
             for row in ranks:
                 conn_level = get_level(conn, assig_rule, [row[0], ])
-                if tb_lev[0] == conn_level:
-                    cu = conn.cursor()
-                    cu.execute("select cv.name, m.name, measure_value "
-                               "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
-                               "join measure m on d.id_measure=m.id "
-                               "join conn_element c on cv.id_conn_element=c.id "
-                               "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
-                    db_explanations = cu.fetchall()
-                    onto_expl_list = get_onto_expl_list(db_explanations, conn_level, att_names)
-                    temp_list.append(onto_expl_list)
+                levels_measure = conn_level.split('/')
+                for level_measure in levels_measure:
+                    if tb_lev[0] == level_measure.strip():
+                        cu = conn.cursor()
+                        cu.execute("select cv.name, m.name, measure_value "
+                                   "from conn_element_value cv join data d on d.id_conn_element_value=cv.id "
+                                   "join measure m on d.id_measure=m.id "
+                                   "join conn_element c on cv.id_conn_element=c.id "
+                                   "where cv.name = ? and c.name = ? and d.id_measure = ? ", (cv_name, ca_name, row[1]))
+                        db_explanations = cu.fetchall()
+                        onto_expl_list = get_onto_expl_list(db_explanations, conn_level, att_names)
+                        temp_list.append(onto_expl_list)
         for ex in temp_list:
             for e in ex:
                 a = tuple(e)
                 e_list.append(a)
-    if OBRC_THRESHOLD > 0:
+
         for it in e_list:
-            if it[4] >= OBRC_THRESHOLD:
+            if OBRC_THRESHOLD > 0:
+                if it[4] >= OBRC_THRESHOLD:
+                    sorted_list.append(it)
+            else:
                 sorted_list.append(it)
     sorted_list = sorted(sorted_list, key=itemgetter(4), reverse=True)
     return sorted_list[:3]
@@ -650,7 +657,7 @@ def main():
                 print('FILTERED RULES:')
                 for a in filtered_rules:
                     print_plain_rule(a[0])
-                    if FILTER == 'no_cons' and atk_id == '':
+                    if FILTER == 'no_cons' and ATK_ID == '':
                         print('Rule is not a consequence of any ATK formula')
                     else:
                         for atk in a[1]:
@@ -660,7 +667,8 @@ def main():
                         print_explanations(a[0])
                     print('---------------------------------------------')
             else:
-                print('No filtered rules match')
+                print('---------------------------------------------')
+                print('NO FILTERED RULES MATCH CRITERIA')
 
 
 if __name__ == '__main__':
