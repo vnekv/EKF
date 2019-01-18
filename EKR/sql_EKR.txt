@@ -1,38 +1,39 @@
-DROP TABLE IF EXISTS measure;
-DROP TABLE IF EXISTS conn_element;
-DROP TABLE IF EXISTS conn_element_value;
-DROP TABLE IF EXISTS data;
+DROP TABLE IF EXISTS ea;
+DROP TABLE IF EXISTS conn_att;
+DROP TABLE IF EXISTS conn_att_category;
+DROP TABLE IF EXISTS item_ek;
 DROP TABLE IF EXISTS level;
 DROP TABLE IF EXISTS level_group;
 DROP TABLE IF EXISTS assignment_rule;
-DROP TABLE IF EXISTS atk_formula;
+DROP TABLE IF EXISTS sei_formula;
 
-CREATE TABLE `measure` (
+CREATE TABLE `ea` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`name`	TEXT,
 	`unit`	TEXT,
-	`source`	TEXT
+	`source_name`	TEXT
 );
 
-CREATE TABLE `conn_element` (
+CREATE TABLE `conn_att` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`name`	TEXT
 );
 
-CREATE TABLE `conn_element_value` (
+CREATE TABLE `conn_att_category` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`name`	TEXT,
-	`id_parent_value`	INTEGER,
-  `id_conn_element`	INTEGER
+	`id_parent_conn_att`	INTEGER,
+  `id_conn_att`	INTEGER
 );
 
-CREATE TABLE `data` (
+CREATE TABLE `item_ek` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
-	`id_conn_element_value`	INTEGER,
-	`id_measure`	INTEGER,
-	`measure_rank`	INTEGER,
-	`measure_value`	REAL
+	`id_conn_att_category`	INTEGER,
+	`id_ea`	INTEGER,
+	`ea_rank`	INTEGER,
+	`ea_value`	REAL
 );
+
 
 CREATE TABLE `level` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,184 +53,181 @@ CREATE TABLE `assignment_rule` (
 	`id_level_group`	INTEGER,
 	`categories`	INTEGER,
 	`top_bottom_categories`	INTEGER,
-	`categories_per_level`	INTEGER,
-	`overlapping_levels`	INTEGER
+	`categories_per_level`	INTEGER
 );
 
-CREATE TABLE `atk_formula` (
+CREATE TABLE `sei_formula` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
-	`id_measure`	INTEGER,
+	`id_ea`	INTEGER,
 	`attribute_name`	TEXT,
 	`relationship`	TEXT
 );
 
-insert into measure (name, unit, source) values ('income', 'czk', 'csu');
-insert into measure (name, unit, source) values ('flat price', 'czk / m2', 'csu');
-insert into measure (name, unit, source) values ('mortgage', 'czk', 'csu');
-insert into measure (name, unit, source) values ('unemployment', '%', 'csu');
+insert into ea (id, name, unit, source_name) values (1, 'income', 'czk', 'cso2016');
+insert into ea (id, name, unit, source_name) values (2, 'flat price', 'czk / m2', 'del2016');
+insert into ea (id, name, unit, source_name) values (3, 'mortgage', 'czk', 'mrdcr2017');
+insert into ea (id, name, unit, source_name) values (4, 'unemployment', '%', 'cso2018');
 
 
-insert into conn_element (name) values ('State');
-insert into conn_element (name) values ('Region');
-insert into conn_element (name) values ('District');
-
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Èeská republika', 0, 1);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Hlavní mìsto Praha', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Støedoèeský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jihoèeský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Plzeòský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Karlovarský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Ústecký kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Liberecký kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Královéhradecký kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Pardubický kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Kraj Vysoèina', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jihomoravský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Olomoucký kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Zlínský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Moravskoslezský kraj', 1, 2);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Praha', 2, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Benesov', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Beroun', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Kladno', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Kolin', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Kutna Hora', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Melnik', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Mlada Boleslav', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Nymburk', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Praha - vychod', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Praha - zapad', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Pribram', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Rakovnik', 3, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Ceske Budejovice', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Cesky Krumlov', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jindrichuv Hradec', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Pisek', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Prachatice', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Strakonice', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Tabor', 4, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Domazlice', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Klatovy', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Plzen', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Plzen - jih', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Plzen - sever', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Rokycany', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Tachov', 5, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Cheb', 6, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Karlovy Vary', 6, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Sokolov', 6, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Decin', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Chomutov', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Litomerice', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Louny', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Most', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Teplice', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Usti nad Labem', 7, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Ceska Lipa', 8, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jablonec nad Nisou', 8, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Liberec', 8, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Semily', 8, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Hradec Kralove', 9, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jicin', 9, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Nachod', 9, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Rychnov nad Kneznou', 9, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Trutnov', 9, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Chrudim', 10, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Pardubice', 10, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Svitavy', 10, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Usti nad Orlici', 10, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Havlickuv Brod', 11, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jihlava', 11, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Pelhrimov', 11, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Trebic', 11, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Zdar nad Sazavou', 11, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Blansko', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Brno', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Brno - venkov', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Breclav', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Hodonin', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Vyskov', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Znojmo', 12, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Jesenik', 13, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Olomouc', 13, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Prostejov', 13, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Prerov', 13, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Sumperk', 13, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Kromeriz', 14, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Uherske Hradiste', 14, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Vsetin', 14, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Zlin', 14, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Bruntal', 15, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Frydek - Mistek', 15, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Karvina', 15, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Novy Jicin', 15, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Opava', 15, 3);
-insert into conn_element_value (name, id_parent_value, id_conn_element) values ('Ostrava', 15, 3);
+insert into conn_att(name) values ('State');
+insert into conn_att(name) values ('Region');
+insert into conn_att(name) values ('District');
 
 
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Èeská republika', 0, 1);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Hlavní mìsto Praha', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Støedoèeský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jihoèeský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Plzeòský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Karlovarský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Ústecký kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Liberecký kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Královéhradecký kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Pardubický kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Kraj Vysoèina', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jihomoravský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Olomoucký kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Zlínský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Moravskoslezský kraj', 1, 2);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Praha', 2, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Benesov', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Beroun', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Kladno', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Kolin', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Kutna Hora', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Melnik', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Mlada Boleslav', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Nymburk', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Praha - vychod', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Praha - zapad', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Pribram', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Rakovnik', 3, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Ceske Budejovice', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Cesky Krumlov', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jindrichuv Hradec', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Pisek', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Prachatice', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Strakonice', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Tabor', 4, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Domazlice', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Klatovy', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Plzen', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Plzen - jih', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Plzen - sever', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Rokycany', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Tachov', 5, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Cheb', 6, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Karlovy Vary', 6, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Sokolov', 6, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Decin', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Chomutov', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Litomerice', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Louny', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Most', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Teplice', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Usti nad Labem', 7, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Ceska Lipa', 8, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jablonec nad Nisou', 8, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Liberec', 8, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Semily', 8, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Hradec Kralove', 9, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jicin', 9, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Nachod', 9, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Rychnov nad Kneznou', 9, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Trutnov', 9, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Chrudim', 10, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Pardubice', 10, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Svitavy', 10, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Usti nad Orlici', 10, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Havlickuv Brod', 11, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jihlava', 11, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Pelhrimov', 11, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Trebic', 11, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Zdar nad Sazavou', 11, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Blansko', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Brno', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Brno - venkov', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Breclav', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Hodonin', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Vyskov', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Znojmo', 12, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Jesenik', 13, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Olomouc', 13, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Prostejov', 13, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Prerov', 13, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Sumperk', 13, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Kromeriz', 14, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Uherske Hradiste', 14, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Vsetin', 14, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Zlin', 14, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Bruntal', 15, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Frydek - Mistek', 15, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Karvina', 15, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Novy Jicin', 15, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Opava', 15, 3);
+insert into conn_att_category (name, id_parent_conn_att, id_conn_att) values ('Ostrava', 15, 3);
 
 
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (2, 1, 1, 35115);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (3, 1, 2, 27345);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (12, 1, 3, 26116);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (5, 1, 4, 26026);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (15, 1, 5, 24877);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (8, 1, 6, 24767);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (9, 1, 7, 24387);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (7, 1, 8, 24336);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (4, 1, 9, 24321);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (11, 1, 10, 24293);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (13, 1, 11, 24175);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (10, 1, 12, 24067);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (14, 1, 13, 23873);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (6, 1, 14, 22707);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (2, 2, 1, 61500);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (12, 2, 2, 46800);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (9, 2, 3, 37100);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (3, 2, 4, 35500);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (5, 2, 5, 32100);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (13, 2, 6, 32000);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (10, 2, 7, 31900);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (4, 2, 8, 31700);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (14, 2, 9, 27500);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (11, 2, 10, 26500);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (8, 2, 11, 25000);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (6, 2, 12, 22100);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (15, 2, 13, 18400);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (7, 2, 14, 10700);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (2, 3, 1, 2.721);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (12, 3, 2, 1.933);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (5, 3, 3, 1.806);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (8, 3, 4, 1.784);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (3, 3, 5, 1.769);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (4, 3, 6, 1.757);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (9, 3, 7, 1.719);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (10, 3, 8, 1.691);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (7, 3, 9, 1.653);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (15, 3, 10, 1.639);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (13, 3, 11, 1.632);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (14, 3, 12, 1.590);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (11, 3, 13, 1.542);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (6, 3, 14, 1.467);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (2, 4, 1, 1.7);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (5, 4, 2, 1.9);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (3, 4, 3, 2.1);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (4, 4, 4, 2.2);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (9, 4, 5, 2.2);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (10, 4, 6, 2.7);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (11, 4, 7, 2.7);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (13, 4, 8, 3.1);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (6, 4, 9, 3.3);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (12, 4, 10, 3.3);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (7, 4, 11, 3.5);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (14, 4, 12, 3.6);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (8, 4, 13, 3.7);
-insert into data (id_conn_element_value, id_measure, measure_rank, measure_value) values (15, 4, 14, 4.7);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (2, 1, 1, 35115);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (3, 1, 2, 27345);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (12, 1, 3, 26116);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (5, 1, 4, 26026);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (15, 1, 5, 24877);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (8, 1, 6, 24767);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (9, 1, 7, 24387);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (7, 1, 8, 24336);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (4, 1, 9, 24321);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (11, 1, 10, 24293);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (13, 1, 11, 24175);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (10, 1, 12, 24067);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (14, 1, 13, 23873);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (6, 1, 14, 22707);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (2, 2, 1, 61500);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (12, 2, 2, 46800);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (9, 2, 3, 37100);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (3, 2, 4, 35500);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (5, 2, 5, 32100);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (13, 2, 6, 32000);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (10, 2, 7, 31900);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (4, 2, 8, 31700);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (14, 2, 9, 27500);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (11, 2, 10, 26500);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (8, 2, 11, 25000);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (6, 2, 12, 22100);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (15, 2, 13, 18400);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (7, 2, 14, 10700);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (2, 3, 1, 2.721);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (12, 3, 2, 1.933);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (5, 3, 3, 1.806);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (8, 3, 4, 1.784);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (3, 3, 5, 1.769);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (4, 3, 6, 1.757);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (9, 3, 7, 1.719);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (10, 3, 8, 1.691);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (7, 3, 9, 1.653);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (15, 3, 10, 1.639);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (13, 3, 11, 1.632);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (14, 3, 12, 1.590);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (11, 3, 13, 1.542);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (6, 3, 14, 1.467);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (2, 4, 1, 1.7);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (5, 4, 2, 1.9);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (3, 4, 3, 2.1);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (4, 4, 4, 2.2);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (9, 4, 5, 2.2);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (10, 4, 6, 2.7);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (11, 4, 7, 2.7);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (13, 4, 8, 3.1);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (6, 4, 9, 3.3);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (12, 4, 10, 3.3);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (7, 4, 11, 3.5);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (14, 4, 12, 3.6);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (8, 4, 13, 3.7);
+insert into item_ek (id_conn_att_category, id_ea, ea_rank, ea_value) values (15, 4, 14, 4.7);
 
-
-insert into atk_formula (id_measure, attribute_name, relationship) values (1, 'loan', 'direct_prop');
-insert into atk_formula (id_measure, attribute_name, relationship) values (4, 'salary', 'indirect_prop');
-
+insert into sei_formula (id_ea, attribute_name, relationship) values (1, 'loan', 'direct_prop');
+insert into sei_formula (id_ea, attribute_name, relationship) values (4, 'salary', 'indirect_prop');
+insert into sei_formula (id_ea, attribute_name, relationship) values (2, 'loan', 'direct_prop');
 
 insert into level_group (name, cnt) values ('very low - very high', 5);
 insert into level_group (name, cnt) values ('low - high', 3);
@@ -243,11 +241,10 @@ insert into level (id_level_group, name, sort) values (2, 'low', 3);
 insert into level (id_level_group, name, sort) values (2, 'medium', 2);
 insert into level (id_level_group, name, sort) values (2, 'high', 1);
 
-insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level, overlapping_levels) values (1, 10, 2, 2, 0);
-insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level, overlapping_levels) values (1, 14, 3, 4, 1);
-insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level, overlapping_levels) values (1, 5, 1, 1, 0);
-insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level, overlapping_levels) values (2, 3, 1, 1, 0);
-insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level, overlapping_levels) values (2, 14, 5, 4, 0);
-
+insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level) values (1, 10, 2, 2);
+insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level) values (1, 14, 3, 3);
+insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level) values (1, 5, 1, 1);
+insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level) values (2, 3, 1, 1);
+insert into assignment_rule (id_level_group, categories, top_bottom_categories, categories_per_level) values (2, 14, 5, 4);
 
 
