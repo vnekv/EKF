@@ -277,8 +277,10 @@ def apply_sei_formula(conn, sei_id=1, level_atr='very low', level_ea='low / very
                     cons = 1
                 if (level_ea == 'very low' and  level_attribute == 'very high') \
                         or (level_ea == 'low' and level_attribute == 'high') \
+                        or (level_ea == 'low' and level_attribute == 'very high')\
                         or (level_ea == 'very high' and  level_attribute == 'very low') \
-                        or (level_ea == 'high' and  level_attribute == 'low'):
+                        or (level_ea == 'high' and level_attribute == 'low')\
+                        or (level_ea == 'high' and  level_attribute == 'very low'):
                     contr = 1
         applied_sei = {
             "id": one[0],
@@ -295,8 +297,10 @@ def apply_sei_formula(conn, sei_id=1, level_atr='very low', level_ea='low / very
                     contr = 1
                 if (level_ea == 'very low' and level_attribute == 'very high') \
                         or (level_ea == 'low' and level_attribute == 'high') \
+                        or (level_ea == 'low' and level_attribute == 'very high') \
                         or (level_ea == 'very high' and level_attribute == 'very low') \
-                        or (level_ea == 'high' and level_attribute == 'low'):
+                        or (level_ea == 'high' and level_attribute == 'low') \
+                        or (level_ea == 'high' and level_attribute == 'very low'):
                     cons = 1
         applied_sei = {
             "id": one[0],

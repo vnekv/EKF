@@ -1,12 +1,12 @@
 CONN_ATTRIBUTE = 'District'
-SHOW_EXPLANATIONS = 1
+SHOW_EXPLANATIONS = 0
 EXPL_RELEVANCY = 1
 # 1: only top or bottom Level
 # 2: only OBRC (top 3 Explanations)
 # 3: top and bottom Levels and then sort by OBRC (top 3 Explanations)
 OBRC_THRESHOLD = 0  # threshold for OBRC
-SHOW_SEI = 0
-FILTER = 'cons'
+SHOW_SEI = 1
+FILTER = 'contr'
 RAISE_HIERARCHY = 1 # raise Level of hierarchy of Connecting Attribute
 CONN_LEVELS = 'width' # width rank
 LEVELS = 3   #5
