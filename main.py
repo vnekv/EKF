@@ -642,7 +642,7 @@ def main():
             used_seis_dist = get_distinct_seis(used_seis)
             print('RELEVANT SEI FORMULAS:')
             for a in used_seis_dist:
-                print('id:', a['id'], ', IA:', a['attribute'], ', relationship:', a['relationship'], ', EA:', a['ea'])
+                print('id:', a['id'], ', EA:', a['ea'], ', relationship:', a['relationship'], ', IA:', a['attribute'])
         if not SHOW_SEI:
             for a in assoc_rules:
                 print_plain_rule(a)
@@ -660,7 +660,7 @@ def main():
                     else:
                         for sei in a[1]:
                             print('Rule is ', FILTER, ' of the SEI formula: ', '\n'
-                                                                               'IA: ', sei['attribute'], ', relationship: ', sei['relationship'], ', EA: ', sei['ea'])
+                                                                               'EA: ', sei['ea'], ', relationship: ', sei['relationship'], ', IA: ', sei['attribute'],)
                     if SHOW_EXPLANATIONS:
                         print_explanations(a[0])
                     print('---------------------------------------------')
